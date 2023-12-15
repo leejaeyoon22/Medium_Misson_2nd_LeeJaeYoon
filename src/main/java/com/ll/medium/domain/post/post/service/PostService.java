@@ -50,7 +50,7 @@ public class PostService {
     }
 
     public boolean canDelete(Member actor, Post post) {
-        if ( actor.isAdmin() ) return true;
+        if (actor.isAdmin()) return true;
 
         return actor.equals(post.getAuthor());
     }
@@ -65,5 +65,10 @@ public class PostService {
     @Transactional
     public void delete(Post post) {
         postRepository.delete(post);
+    }
+
+    @Transactional
+    public void increaseHit(Post post) {
+        post.increaseHit();
     }
 }
