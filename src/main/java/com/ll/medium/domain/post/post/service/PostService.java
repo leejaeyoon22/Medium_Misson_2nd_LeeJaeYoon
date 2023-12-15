@@ -3,6 +3,7 @@ package com.ll.medium.domain.post.post.service;
 import com.ll.medium.domain.member.member.entity.Member;
 import com.ll.medium.domain.post.post.entity.Post;
 import com.ll.medium.domain.post.post.repository.PostRepository;
+import com.ll.medium.domain.post.postComment.entity.PostComment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -96,5 +97,10 @@ public class PostService {
     @Transactional
     public void cancelLike(Member actor, Post post) {
         post.deleteLike(actor);
+    }
+
+    @Transactional
+    public PostComment writeComment(Member actor, Post post, String body) {
+        return post.writeComment(actor, body);
     }
 }
