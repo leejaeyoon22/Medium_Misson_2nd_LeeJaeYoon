@@ -3,7 +3,7 @@
 - [x] 필수미션 1 : Member 클래스에 private boolean isPaid 필드를 추가
   - 해당 필드가 true 인 사람이 로그인할 때, ROLE_PAID 권한도 가지도록(스프링 시큐리티)
   - 해당 필드가 true 이면 유료 멤버십 회원 입니다.
-- [ ] 필수미션 2 : Post 클래스에 private boolean isPaid 필드를 추가
+- [x] 필수미션 2 : Post 클래스에 private boolean isPaid 필드를 추가
   - 해당 필드가 true 인 글은 유료회원이 아닌사람에게는 상세보기(GET /post/1)에서 본문(content)이 나올 자리에 이 글은 유료멤버십전용 입니다. 라는 문구가 나온다.
   - 엔드 포인트
     GET /post/list
