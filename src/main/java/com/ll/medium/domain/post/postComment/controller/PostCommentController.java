@@ -31,7 +31,7 @@ public class PostCommentController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/write")
     public String write(
-            @PathVariable long id,
+            @PathVariable("id") long id,
             @Valid WriteForm form
     ) {
         Post post = postService.findById(id).orElseThrow(() -> new GlobalException("404-1", "해당 글이 존재하지 않습니다."));
@@ -44,8 +44,8 @@ public class PostCommentController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{commentId}/modify")
     public String showModify(
-            @PathVariable long id,
-            @PathVariable long commentId
+            @PathVariable("id") long id,
+            @PathVariable("commentId") long commentId
     ) {
         Post post = postService.findById(id).orElseThrow(() -> new GlobalException("404-1", "해당 글이 존재하지 않습니다."));
         PostComment postComment = postService.findCommentById(commentId).orElseThrow(() -> new GlobalException("404-1", "해당 댓글이 존재하지 않습니다."));
@@ -69,8 +69,8 @@ public class PostCommentController {
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/{commentId}/modify")
     public String modify(
-            @PathVariable long id,
-            @PathVariable long commentId,
+            @PathVariable("id") long id,
+            @PathVariable("commentId") long commentId,
             @Valid ModifyForm form
     ) {
         PostComment postComment = postService.findCommentById(commentId).orElseThrow(() -> new GlobalException("404-1", "해당 댓글이 존재하지 않습니다."));
@@ -86,8 +86,8 @@ public class PostCommentController {
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{commentId}/delete")
     public String delete(
-            @PathVariable long id,
-            @PathVariable long commentId
+            @PathVariable("id") long id,
+            @PathVariable("commentId") long commentId
     ) {
         PostComment postComment = postService.findCommentById(commentId).orElseThrow(() -> new GlobalException("404-1", "해당 댓글이 존재하지 않습니다."));
 

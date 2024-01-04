@@ -29,7 +29,7 @@ public class PostController {
     private final Rq rq;
 
     @GetMapping("/{id}")
-    public String showDetail(@PathVariable long id) {
+    public String showDetail(@PathVariable("id") long id) {
         Post post = postService.findById(id).orElseThrow(() -> new GlobalException("404-1", "해당 글이 존재하지 않습니다."));
 
         postService.increaseHit(post);
@@ -41,8 +41,8 @@ public class PostController {
 
     @GetMapping("/list")
     public String showList(
-            @RequestParam(defaultValue = "") String kw,
-            @RequestParam(defaultValue = "1") int page
+            @RequestParam(defaultValue = "", name = "kw") String kw,
+            @RequestParam(defaultValue = "1", name = "page") int page
     ) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("id"));
@@ -58,8 +58,8 @@ public class PostController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/myList")
     public String showMyList(
-            @RequestParam(defaultValue = "") String kw,
-            @RequestParam(defaultValue = "1") int page
+            @RequestParam(defaultValue = "", name = "kw") String kw,
+            @RequestParam(defaultValue = "1", name = "page") int page
     ) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("id"));
@@ -86,19 +86,20 @@ public class PostController {
         @NotBlank
         private String body;
         private boolean isPublished;
+        private boolean isPaid;
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/write")
     public String write(@Valid WriteForm form) {
-        Post post = postService.write(rq.getMember(), form.getTitle(), form.getBody(), form.isPublished());
+        Post post = postService.write(rq.getMember(), form.getTitle(), form.getBody(), form.isPublished(), form.isPaid());
 
         return rq.redirect("/post/" + post.getId(), post.getId() + "번 글이 작성되었습니다.");
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}/modify")
-    public String showModify(@PathVariable long id, Model model) {
+    public String showModify(@PathVariable("id") long id, Model model) {
         Post post = postService.findById(id).orElseThrow(() -> new GlobalException("404-1", "해당 글이 존재하지 않습니다."));
 
         if (!postService.canModify(rq.getMember(), post)) throw new GlobalException("403-1", "권한이 없습니다.");
@@ -120,7 +121,7 @@ public class PostController {
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/{id}/modify")
-    public String modify(@PathVariable long id, @Valid ModifyForm form) {
+    public String modify(@PathVariable("id") long id, @Valid ModifyForm form) {
         Post post = postService.findById(id).orElseThrow(() -> new GlobalException("404-1", "해당 글이 존재하지 않습니다."));
 
         if (!postService.canModify(rq.getMember(), post)) throw new GlobalException("403-1", "권한이 없습니다.");
@@ -132,7 +133,7 @@ public class PostController {
 
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{id}/delete")
-    public String delete(@PathVariable long id) {
+    public String delete(@PathVariable("id") long id) {
         Post post = postService.findById(id).orElseThrow(() -> new GlobalException("404-1", "해당 글이 존재하지 않습니다."));
 
         if (!postService.canDelete(rq.getMember(), post)) throw new GlobalException("403-1", "권한이 없습니다.");
@@ -144,7 +145,7 @@ public class PostController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/{id}/like")
-    public String like(@PathVariable long id) {
+    public String like(@PathVariable("id") long id) {
         Post post = postService.findById(id).orElseThrow(() -> new GlobalException("404-1", "해당 글이 존재하지 않습니다."));
 
         if (!postService.canLike(rq.getMember(), post)) throw new GlobalException("403-1", "권한이 없습니다.");
@@ -156,7 +157,7 @@ public class PostController {
 
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{id}/cancelLike")
-    public String cancelLike(@PathVariable long id) {
+    public String cancelLike(@PathVariable("id") long id) {
         Post post = postService.findById(id).orElseThrow(() -> new GlobalException("404-1", "해당 글이 존재하지 않습니다."));
 
         if (!postService.canCancelLike(rq.getMember(), post)) throw new GlobalException("403-1", "권한이 없습니다.");
