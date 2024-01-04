@@ -41,8 +41,8 @@ public class PostController {
 
     @GetMapping("/list")
     public String showList(
-            @RequestParam(defaultValue = "") String kw,
-            @RequestParam(defaultValue = "1") int page
+            @RequestParam(defaultValue = "", name = "kw") String kw,
+            @RequestParam(defaultValue = "1", name = "page") int page
     ) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("id"));
